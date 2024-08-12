@@ -5,7 +5,7 @@ class Node {
 }
 
 class Linked {
-  Node? head; //head // hdsk
+  Node? head; 
   void add(var acd) {
     if (head == null) {
       head = Node(acd);
