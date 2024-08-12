@@ -1,3 +1,4 @@
+//queue_inlinkedlist
 class Node {
   Node? next;
   int? data;

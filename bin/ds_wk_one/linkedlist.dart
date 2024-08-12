@@ -1,5 +1,5 @@
 class Node {
-  var data; // acd |pointer
+  var data; 
   Node? next;
   Node(this.data);
 }

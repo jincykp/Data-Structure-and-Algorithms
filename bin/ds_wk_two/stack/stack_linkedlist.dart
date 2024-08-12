@@ -1,3 +1,4 @@
+//stackinlinkedlist
 class Node {
   dynamic data;
   Node? next;

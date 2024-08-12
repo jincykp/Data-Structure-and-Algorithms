@@ -1,4 +1,4 @@
-//queue using 2stack
+//queue using stack
 
 class Stack {
   List stack = [];

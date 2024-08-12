@@ -1,195 +1,91 @@
-import 'dart:io';
+// Define the Node class
+import 'dart:collection';
 
 class Node {
   int data;
   Node? left;
   Node? right;
-  Node(this.data, {this.left, this.right});
+
+  Node(this.data);
 }
 
-class BST {
+// Define the BinaryTree class
+class BinaryTree {
   Node? root;
 
-  //to insert an node
-  insert(int data) {
-    Node? newNode = Node(data);
+  // Method to insert a new value into the tree
+  void insert(int value) {
+    Node newNode = Node(value);
     if (root == null) {
       root = newNode;
     } else {
-      Node? current = root;
-      while (true) {
-        if (data < current!.data) {
-          if (current.left == null) {
-            return current.left = newNode;
-          } else {
-            current = current.left;
-          }
+      Queue<Node> queue = Queue<Node>();
+      queue.add(root!);
+
+      while (queue.isNotEmpty) {
+        Node current = queue.removeFirst();
+
+        if (current.left == null) {
+          current.left = newNode;
+          break;
         } else {
-          if (current.right == null) {
-            return current.right = newNode;
-          } else {
-            current = current.right;
-          }
+          queue.add(current.left!);
+        }
+
+        if (current.right == null) {
+          current.right = newNode;
+          break;
+        } else {
+          queue.add(current.right!);
         }
       }
     }
   }
 
-/* =================================================*/
-
-//to remove an node
-  remove(int data) {
-    removeHelper(data, root, null);
-  }
-
-  removeHelper(int data, Node? current, Node? parent) {
-    while (current != null) {
-      if (data < current.data) {
-        parent = current;
-        current = current.left;
-      } else if (data > current.data) {
-        parent = current;
-        current = current.right;
-      } else {
-        if (current.left != null && current.right != null) {
-          current.data = getMin(current.right);
-          removeHelper(current.data, current.right, current);
-        } else {
-          if (parent == null) {
-            if (current.right == null) {
-              root = current.left;
-            } else {
-              root = current.right;
-            }
-          } else {
-            if (parent.left == current) {
-              if (current.right == null) {
-                parent.left = current.left;
-              } else {
-                parent.left = current.right;
-              }
-            } else {
-              if (current.left == null) {
-                parent.right = current.left;
-              } else {
-                parent.right = current.right;
-              }
-            }
-          }
-        }
-        break;
-      }
+  // In-order traversal
+  void inOrderTraversal(Node? node) {
+    if (node != null) {
+      inOrderTraversal(node.left);
+      print(node.data);
+      inOrderTraversal(node.right);
     }
   }
 
-  getMin(Node? current) {
-    if (current?.left == null) {
-      return current?.data;
-    } else {
-      getMin(current?.left);
+  // Pre-order traversal
+  void preOrderTraversal(Node? node) {
+    if (node != null) {
+      print(node.data);
+      preOrderTraversal(node.left);
+      preOrderTraversal(node.right);
     }
   }
 
-/* =================================================*/
-
-  // return true if the tree contains the value
-
-  bool contains(int value) {
-    Node? current = root;
-    while (current != null) {
-      if (value < current.data) {
-        current = current.left;
-      } else if (value > current.data) {
-        current = current.right;
-      } else {
-        return true;
-      }
+  // Post-order traversal
+  void postOrderTraversal(Node? node) {
+    if (node != null) {
+      postOrderTraversal(node.left);
+      postOrderTraversal(node.right);
+      print(node.data);
     }
-    return false;
-  }
-
-  /* =================================================*/
-
-//print nodes inorder
-  inOrder() {
-    inOrderHelper(root);
-  }
-
-  inOrderHelper(Node? current) {
-    if (current != null) {
-      inOrderHelper(current.left);
-      print(current.data);
-      inOrderHelper(current.right);
-    }
-  }
-
-/* =================================================*/
-
-  //toprint preorder
-  preOder() {
-    preOderHelper(root);
-  }
-
-  preOderHelper(Node? current) {
-    if (current != null) {
-      stdout.write('${current.data} ');
-      preOderHelper(current.left);
-      preOderHelper(current.right);
-    }
-  }
-/* =================================================*/
-
-//to print post order
-
-  postOrder() {
-    postOderHelper(root);
-  }
-
-  postOderHelper(Node? current) {
-    if (current != null) {
-      postOderHelper(current.left);
-      postOderHelper(current.right);
-      stdout.write('${current.data} ');
-    }
-  }
-
-/* =================================================*/
-
-//to find closest elemnt to the target  in the tree
-
-  findClosest(int target) {
-    Node? current = root;
-    int? closest = current?.data;
-    while (current != null) {
-      if ((target - closest!).abs() > (target - current.data).abs()) {
-        closest = current.data;
-      }
-      if (target < current.data) {
-        current = current.left;
-      } else if (target > current.data) {
-        current = current.right;
-      } else {
-        break;
-      }
-    }
-    return closest;
   }
 }
 
 void main() {
-  BST bst = BST();
-  bst.insert(4);
-  bst.insert(5);
-  bst.insert(1);
-  bst.remove(4);
-  bst.insert(8);
-  bst.insert(10);
-  bst.insert(2);
-  print(bst.contains(4));
-  bst.inOrder();
-  bst.preOder();
-  stdout.writeln();
-  bst.postOrder();
-  stdout.writeln();
-  print(bst.findClosest(3));
+  BinaryTree tree = BinaryTree();
+  tree.insert(1);
+  tree.insert(2);
+  tree.insert(3);
+  tree.insert(4);
+  tree.insert(5);
+  tree.insert(6);
+  tree.insert(7);
+
+  print('In-order traversal:');
+  tree.inOrderTraversal(tree.root);
+
+  print('Pre-order traversal:');
+  tree.preOrderTraversal(tree.root);
+
+  print('Post-order traversal:');
+  tree.postOrderTraversal(tree.root);
 }
