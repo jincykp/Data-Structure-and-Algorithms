@@ -9,9 +9,8 @@ class Stack {
   pop() {
     if (stack.isEmpty) {
       return;
-    } else {
-      return stack.removeLast();
     }
+    return stack.removeAt(0);
   }
 }
 
